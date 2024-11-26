@@ -1,31 +1,51 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import FriendList from './pages/FriendList'
-import Home from './pages/Home'
-import Messages from './pages/Messages'
+import { createContext, StrictMode, useState } from "react";
+import { createRoot } from "react-dom/client";
+import "./index.css";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import FriendList from "./pages/FriendList";
+import Home from "./pages/Home";
+import Messages from "./pages/Messages";
+
+interface GlobalData {
+  user: string;
+  setUser: (user: string) => void;
+}
+
+export const GlobalContext = createContext<GlobalData>({
+  user: "zwawin",
+  setUser: () => {},
+});
+
+function GlobalProvider({ children }: { children: React.ReactNode }) {
+  const [user, setUser] = useState(localStorage.getItem("user") || "zwawin");
+
+  return (
+    <GlobalContext.Provider value={{ user, setUser }}>
+      {children}
+    </GlobalContext.Provider>
+  );
+}
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/Friends" element={<FriendList />} />
-        <Route path="messages/:id" element={<Messages />} />
-
-
+        <Route path="/friends" element={<FriendList />} />
+        <Route path="/messages/:id" element={<Messages />} />
       </Routes>
-
-
     </BrowserRouter>
-
-  )
+  );
 }
 
+const rootElement = document.getElementById("root");
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-)
+if (rootElement) {
+  createRoot(rootElement).render(
+    <StrictMode>
+      <GlobalProvider>
+        <App />
+      </GlobalProvider>
+    </StrictMode>,
+  );
+}
