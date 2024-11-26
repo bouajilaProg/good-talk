@@ -5,6 +5,8 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import FriendList from "./pages/FriendList";
 import Home from "./pages/Home";
 import Messages from "./pages/Messages";
+import Register from "./pages/Register";
+import Login from "./pages/Login";
 
 interface GlobalData {
   user: string;
@@ -33,6 +35,9 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/friends" element={<FriendList />} />
         <Route path="/messages/:id" element={<Messages />} />
+        <Route path="Login" element={<Login />} />
+        <Route path="Register" element={<Register />} />
+        <Route path="*" element={<div>404</div>} />
       </Routes>
     </BrowserRouter>
   );

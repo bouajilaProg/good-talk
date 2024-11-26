@@ -21,6 +21,8 @@ function MessagesForm({ sendNewMessage }: MessagesFormProps) {
         onClick={(e) => {
           e.preventDefault();
           sendNewMessage(message);
+          1;
+          setMessage("");
           console.log(message);
         }}
         className="px-4 py-2 bg-gray-600 text-gray-100 font-semibold rounded-r-lg hover:bg-gray-500"

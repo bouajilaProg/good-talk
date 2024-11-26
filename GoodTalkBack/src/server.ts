@@ -3,6 +3,7 @@ import { createServer } from "http";
 import { Server } from "socket.io";
 import cors from "cors";
 import { on } from "events";
+import axios from "axios";
 
 interface t_message {
   id: number;
@@ -11,6 +12,7 @@ interface t_message {
 }
 
 const app = express();
+app.use(express.json());
 app.use(cors());
 const server = createServer(app);
 const io = new Server(server, {
@@ -44,10 +46,25 @@ io.on("connection", (socket) => {
 
     socket.join(getRoomName(message.sender, message.reciever));
 
-    io.to(getRoomName(message.sender, message.reciever)).emit(
-      "message",
-      { id: 5, sender: message.sender, body: message.body },
-    );
+    //test if bad message
+    axios.post("http://127.0.0.1:8000/check_toxicity", { text: message.body })
+      .then(
+        (res) => {
+          const toxicScore = res.data.toxic;
+          let messageToSend;
+          if (res.data.toxic < 0.5) {
+            messageToSend = message.body;
+          } else if (toxicScore < 0.7) {
+            messageToSend = "toxic:that's was little toxic";
+          } else {
+            messageToSend = "toxic:that was really toxic";
+          }
+          io.to(getRoomName(message.sender, message.reciever)).emit(
+            "message",
+            { id: 5, sender: message.sender, body: messageToSend },
+          );
+        },
+      );
   });
 
   socket.on("disconnect", () => {

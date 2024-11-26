@@ -41,7 +41,7 @@ function Messages() {
   // Render
   return (
     <main className="min-h-screen bg-gray-800 flex-col flex justify-evenly">
-      <MessagesHeader />
+      <MessagesHeader Reciever={recieverId} />
       <MessagesList messages={messages} user={user} />
       <MessagesForm sendNewMessage={SendMessage} />
     </main>
