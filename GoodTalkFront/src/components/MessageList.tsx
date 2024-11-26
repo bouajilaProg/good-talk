@@ -21,7 +21,7 @@ function MessagesList({ user, messages }: MessageListProps) {
              `}
         >
           <h4 className="text-sm font-medium text-gray-300">
-            {message.sender}
+            {message.sender === user ? "You" : message.sender}
           </h4>
           <p className="mt-1">
             {message.body.startsWith("toxic:")
