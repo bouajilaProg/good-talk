@@ -84,8 +84,6 @@ To run this project locally, follow these steps:
 - Enhancing the user interface to make it more polished and user-friendly.
 - Containerizing the app for easier deployment and scalability.
 
-## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 
